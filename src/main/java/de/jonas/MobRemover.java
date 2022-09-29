@@ -1,10 +1,11 @@
 package de.jonas;
 
+import de.jonas.mobremover.task.BossbarCounterTask;
 import de.jonas.mobremover.task.MobRemoveTask;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -26,9 +27,6 @@ public final class MobRemover extends JavaPlugin {
     /** Die Instanz dieses Plugins. */
     @Getter
     private static MobRemover instance;
-    /** Der Prefix dieses Plugins. */
-    @Getter
-    private static String prefix;
     //</editor-fold>
 
 
@@ -52,9 +50,6 @@ public final class MobRemover extends JavaPlugin {
 
         // initialize plugin instance
         instance = this;
-
-        // initialize prefix
-        prefix = ChatColor.GRAY + "[" + ChatColor.RED + "MobRemover" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
         // load config
         getConfig().options().copyDefaults(true);
@@ -84,7 +79,11 @@ public final class MobRemover extends JavaPlugin {
         }
 
         // initialize mob remove task
-        new MobRemoveTask().runTaskTimer(this, 100, removePeriod * 1000L);
+        new MobRemoveTask().runTaskTimer(
+            this,
+            0,
+            ((long) removePeriod * 20 * 60) - (20 * MobRemoveTask.BOSSBAR_DURATION)
+        );
 
         getLogger().info("Das Plugin wurde erfolgreich aktiviert.");
     }
@@ -94,6 +93,13 @@ public final class MobRemover extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
+
+        // remove boss bar
+        final BossBar bossBar = Bukkit.getBossBar(BossbarCounterTask.BOSS_BAR_KEY);
+
+        assert bossBar != null;
+        bossBar.removeAll();
+        bossBar.setVisible(false);
 
         getLogger().info("Das Plugin wurde deaktiviert.");
     }
