@@ -1,0 +1,8 @@
+removePeriodMinutes: 2
+entityTypes:
+  - 'villager'
+  - 'spider'
+tokens:
+  - 'villagerToken'
+worlds:
+  - 'world'
