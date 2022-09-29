@@ -1,9 +1,11 @@
 package de.jonas;
 
+import de.jonas.mobremover.command.MobZone;
 import de.jonas.mobremover.task.BossbarCounterTask;
 import de.jonas.mobremover.task.MobRemoveTask;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.EntityType;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>Die Haupt- und Main-Klasse dieses Plugins, durch die das gesamte Plugin initialisiert wird. Der
@@ -27,6 +30,9 @@ public final class MobRemover extends JavaPlugin {
     /** Die Instanz dieses Plugins. */
     @Getter
     private static MobRemover instance;
+    /** Der Prefix dieses Plugins. */
+    @Getter
+    private static String prefix;
     //</editor-fold>
 
 
@@ -50,6 +56,9 @@ public final class MobRemover extends JavaPlugin {
 
         // initialize plugin instance
         instance = this;
+
+        // initialize plugin prefix
+        prefix = ChatColor.GRAY + "[" + ChatColor.RED + "MobRemover" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
         // load config
         getConfig().options().copyDefaults(true);
@@ -77,6 +86,9 @@ public final class MobRemover extends JavaPlugin {
 
             this.worlds.add(world);
         }
+
+        // register commands
+        Objects.requireNonNull(getCommand("mobzone")).setExecutor(new MobZone());
 
         // initialize mob remove task
         new MobRemoveTask().runTaskTimer(
