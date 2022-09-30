@@ -94,7 +94,7 @@ public final class MobRemover extends JavaPlugin {
         new MobRemoveTask().runTaskTimer(
             this,
             0,
-            ((long) removePeriod * 20 * 60) - (20 * MobRemoveTask.BOSSBAR_DURATION)
+            (long) removePeriod * 20 * 60
         );
 
         getLogger().info("Das Plugin wurde erfolgreich aktiviert.");
