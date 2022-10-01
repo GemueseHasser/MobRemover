@@ -23,8 +23,10 @@ public final class MobRemoveHandler {
      * Entfernt alle Mobs, die in der Config hinterlegt sind in allen Welten, die in der Config hinterlegt sind. Sowohl
      * Entities mit bestimmten Tokens, die in der Config eingestellt werden können, werden nicht gelöscht, als auch
      * Entities, die sich in einer bestimmten Mob-Zone befinden.
+     *
+     * @return Die Anzahl an Entities, die entfernt wurden.
      */
-    public static void removeMobs() {
+    public static int removeMobs() {
         final File file = new File("plugins/MobRemover", "zone.yml");
         final FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
@@ -39,6 +41,8 @@ public final class MobRemoveHandler {
 
         final Integer minZ = z1 == null || z2 == null ? null : Math.min(z1, z2);
         final Integer maxZ = z1 == null || z2 == null ? null : Math.max(z1, z2);
+
+        int entityCount = 0;
 
         for (@NotNull final World world : MobRemover.getInstance().getWorlds()) {
             loop:
@@ -56,8 +60,13 @@ public final class MobRemoveHandler {
 
                 // remove mob
                 entity.remove();
+
+                // increment entity-count
+                entityCount++;
             }
         }
+
+        return entityCount;
     }
 
     /**

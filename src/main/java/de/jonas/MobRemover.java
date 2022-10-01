@@ -46,6 +46,9 @@ public final class MobRemover extends JavaPlugin {
     /** Alle {@link World Welten}, in denen dieser MobRemover aktiv sein soll. */
     @Getter
     private final List<World> worlds = new ArrayList<>();
+    /** Die Zeit in Sekunden, die die Anzahl an entfernten Mobs angezeigt werden soll. */
+    @Getter
+    private int removedDisplayTime;
     //</editor-fold>
 
 
@@ -67,6 +70,8 @@ public final class MobRemover extends JavaPlugin {
         // load values from config
         final int removePeriod = getConfig().getInt("removePeriodMinutes");
         this.tokens.addAll(getConfig().getStringList("tokens"));
+
+        this.removedDisplayTime = getConfig().getInt("removedDisplayTimeSeconds");
 
         for (@NotNull final String name : getConfig().getStringList("entityTypes")) {
             try {

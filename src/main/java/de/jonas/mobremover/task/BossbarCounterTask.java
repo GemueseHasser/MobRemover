@@ -41,8 +41,23 @@ public final class BossbarCounterTask extends BukkitRunnable {
     public void run() {
         // check if count is 0
         if (count <= 0) {
-            BOSS_BAR.removeAll();
-            MobRemoveHandler.removeMobs();
+            // display removed entities
+            final int removedEntities = MobRemoveHandler.removeMobs();
+            BOSS_BAR.setColor(BarColor.RED);
+            BOSS_BAR.setProgress(1);
+            BOSS_BAR.setTitle(
+                ChatColor.GRAY + "Es wurden " + ChatColor.RED + removedEntities + ChatColor.GRAY + " Mobs entfernt."
+            );
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    // remove boss-bar
+                    BOSS_BAR.removeAll();
+                }
+            }.runTaskLater(MobRemover.getInstance(), MobRemover.getInstance().getRemovedDisplayTime() * 20L);
+
+            // cancel task
             this.cancel();
             return;
         }

@@ -1,4 +1,5 @@
 removePeriodMinutes: 2
+removedDisplayTimeSeconds: 5
 entityTypes:
   - 'villager'
   - 'spider'
