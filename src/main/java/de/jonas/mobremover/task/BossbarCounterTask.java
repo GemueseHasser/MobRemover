@@ -54,6 +54,7 @@ public final class BossbarCounterTask extends BukkitRunnable {
                 public void run() {
                     // remove boss-bar
                     BOSS_BAR.removeAll();
+                    BOSS_BAR.setColor(BarColor.BLUE);
                 }
             }.runTaskLater(MobRemover.getInstance(), MobRemover.getInstance().getRemovedDisplayTime() * 20L);
 
